@@ -34,6 +34,29 @@ st.set_page_config(page_title="Agentic MDM Transformer", layout="wide")
 st.title("Agentic MDM Transformer")
 st.caption("Select a dataset, describe the transformation, approve the generated code, and persist a snapshot.")
 
+# Sidebar for LLM configuration
+with st.sidebar:
+    st.subheader("LLM Configuration")
+    llm_provider = st.selectbox(
+        "LLM Provider",
+        ["ollama", "google"],
+        index=0,
+        help="Select between local Ollama or Google Generative AI"
+    )
+    
+    if llm_provider == "ollama":
+        llm_model = st.text_input(
+            "Ollama Model",
+            value="qwen2.5-coder:7b",
+            help="e.g., qwen2.5-coder:7b, qwen3:8b, gemma3:4b"
+        )
+    else:
+        llm_model = st.text_input(
+            "Google Model",
+            value="gemini-pro",
+            help="e.g., gemini-pro, gemini-1.5-pro"
+        )
+
 uploaded_files = st.file_uploader("Upload CSV files", type=["csv"], accept_multiple_files=True)
 dataframes = load_dataframes(uploaded_files)
 
@@ -71,7 +94,12 @@ if dataframes:
         )
 
         if st.button("Generate Code", use_container_width=True):
-            state = AgentState(prompt=prompt, active_dataset=active_dataset)
+            state = AgentState(
+                prompt=prompt,
+                active_dataset=active_dataset,
+                llm_provider=llm_provider,
+                llm_model=llm_model,
+            )
             try:
                 result, state = run_agent(state, dataframes, str(OUTPUT_PATH))
                 st.session_state.agent_state = state
@@ -110,12 +138,24 @@ if dataframes:
         selected_snapshot_info = next(item for item in snapshots if item["snapshot_id"] == selected_snapshot)
         st.json(selected_snapshot_info)
 
-        if st.button("Load Snapshot", use_container_width=True):
-            snapshot_df = load_snapshot_data(selected_snapshot)
-            st.session_state.dataframes[active_dataset] = snapshot_df
-            st.session_state.active_dataset = active_dataset
-            st.success(f"Loaded snapshot {selected_snapshot} into {active_dataset}")
-            st.dataframe(snapshot_df.head(20), use_container_width=True)
+        col1, col2 = st.columns(2)
+        with col1:
+            if st.button("Load Snapshot", use_container_width=True):
+                snapshot_df = load_snapshot_data(selected_snapshot)
+                st.session_state.dataframes[active_dataset] = snapshot_df
+                st.session_state.active_dataset = active_dataset
+                st.success(f"Loaded snapshot {selected_snapshot} into {active_dataset}")
+                st.dataframe(snapshot_df.head(20), use_container_width=True)
+        
+        with col2:
+            if st.button("Rollback to Snapshot", use_container_width=True):
+                snapshot_df = load_snapshot_data(selected_snapshot)
+                st.session_state.dataframes[active_dataset] = snapshot_df
+                st.session_state.active_dataset = active_dataset
+                # Clear agent state to force fresh generation on snapshot data
+                st.session_state.agent_state = None
+                st.success(f"Rolled back to snapshot {selected_snapshot}. Data updated.")
+                st.rerun()
     else:
         st.info("No snapshots available yet.")
 else:

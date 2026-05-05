@@ -10,3 +10,5 @@ class AgentState:
     result_path: str = ""
     last_error: str = ""
     history: list = field(default_factory=list)
+    llm_provider: str = "ollama"
+    llm_model: str = "qwen2.5-coder:7b"

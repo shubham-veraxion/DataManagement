@@ -14,7 +14,13 @@ def run_agent(state, df_dict, output_path):
 
     # 2. Generate code only once until the prompt changes
     if not state.code:
-        state.code = generate_code(instruction, target_dataset=target_dataset)
+        state.code = generate_code(
+            instruction,
+            target_dataset=target_dataset,
+            llm_provider=state.llm_provider,
+            llm_model=state.llm_model,
+            df_dict=df_dict,
+        )
 
         # 3. Validate
         if not validate(state.code):

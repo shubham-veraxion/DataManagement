@@ -47,3 +47,32 @@
 2026-05-05 14:55:34,903 | INFO | src.agent.nodes.planner | Planning step executed
 2026-05-05 14:55:34,903 | INFO | src.agent.nodes.code_generator | Code generated
 2026-05-05 14:55:34,903 | INFO | src.agent.nodes.validator | Validation passed
+2026-05-05 15:05:31,830 | INFO | src.agent.nodes.code_generator | Calling ollama LLM (nonexistent) for code generation
+2026-05-05 15:05:31,842 | ERROR | src.agent.nodes.code_generator | Error generating code with ollama: model 'nonexistent' not found (status code: 404)
+2026-05-05 15:05:31,842 | INFO | src.agent.nodes.code_generator | Falling back to deterministic code generation
+2026-05-05 15:05:31,842 | INFO | src.agent.nodes.code_generator | Deterministic code generated (fallback)
+2026-05-05 15:06:24,959 | INFO | src.agent.nodes.planner | Planning step executed
+2026-05-05 15:06:25,148 | INFO | src.agent.nodes.code_generator | Calling ollama LLM (qwen2.5-coder:7b) for code generation
+2026-05-05 15:08:07,760 | INFO | src.core.ingestion.csv_loader | Loaded CSV: data/NORDPOOL_CET_Spot_Power_EOD_Validated_1330_20260422133012.csv
+2026-05-05 15:08:07,778 | INFO | src.core.ingestion.csv_loader | Loaded CSV: data/NORDPOOL_CET_Spot_Power_INT_Validated_1330_20260422133017.csv
+2026-05-05 15:08:07,780 | INFO | src.core.ingestion.csv_loader | Loaded CSV: data/ref_data_market_area_mapping.csv
+2026-05-05 15:08:37,533 | INFO | src.core.ingestion.csv_loader | Loaded CSV: data/NORDPOOL_CET_Spot_Power_EOD_Validated_1330_20260422133012.csv
+2026-05-05 15:08:37,550 | INFO | src.core.ingestion.csv_loader | Loaded CSV: data/NORDPOOL_CET_Spot_Power_INT_Validated_1330_20260422133017.csv
+2026-05-05 15:08:37,553 | INFO | src.core.ingestion.csv_loader | Loaded CSV: data/ref_data_market_area_mapping.csv
+2026-05-05 15:08:37,608 | INFO | src.core.ingestion.csv_loader | Loaded CSV: data/NORDPOOL_CET_Spot_Power_EOD_Validated_1330_20260422133012.csv
+2026-05-05 15:08:37,616 | INFO | src.core.ingestion.csv_loader | Loaded CSV: data/NORDPOOL_CET_Spot_Power_INT_Validated_1330_20260422133017.csv
+2026-05-05 15:08:37,617 | INFO | src.core.ingestion.csv_loader | Loaded CSV: data/ref_data_market_area_mapping.csv
+2026-05-05 15:08:37,620 | INFO | src.agent.nodes.planner | Planning step executed
+2026-05-05 15:08:37,909 | INFO | src.agent.nodes.code_generator | Calling ollama LLM (qwen2.5-coder:7b) for code generation
+2026-05-05 15:08:48,023 | INFO | src.agent.nodes.code_generator | Code generated successfully (728 chars)
+2026-05-05 15:08:48,026 | INFO | src.agent.nodes.validator | Validation passed
+2026-05-05 15:09:08,829 | INFO | src.core.ingestion.csv_loader | Loaded CSV: data/NORDPOOL_CET_Spot_Power_EOD_Validated_1330_20260422133012.csv
+2026-05-05 15:09:08,840 | INFO | src.core.ingestion.csv_loader | Loaded CSV: data/NORDPOOL_CET_Spot_Power_INT_Validated_1330_20260422133017.csv
+2026-05-05 15:09:08,841 | INFO | src.core.ingestion.csv_loader | Loaded CSV: data/ref_data_market_area_mapping.csv
+2026-05-05 15:09:08,846 | INFO | src.agent.nodes.planner | Planning step executed
+2026-05-05 15:09:08,866 | INFO | src.agent.nodes.executor | Execution success
+2026-05-05 15:09:08,909 | INFO | src.core.transformations.runner | Saved output: storage/processed/temp.csv
+2026-05-05 15:09:08,913 | INFO | src.core.snapshot.snapshot_manager | Snapshot created: snap_20260505_093908
+2026-05-05 15:10:06,491 | INFO | src.core.ingestion.csv_loader | Loaded CSV: data/NORDPOOL_CET_Spot_Power_EOD_Validated_1330_20260422133012.csv
+2026-05-05 15:10:06,507 | INFO | src.core.ingestion.csv_loader | Loaded CSV: data/NORDPOOL_CET_Spot_Power_INT_Validated_1330_20260422133017.csv
+2026-05-05 15:10:06,508 | INFO | src.core.ingestion.csv_loader | Loaded CSV: data/ref_data_market_area_mapping.csv
