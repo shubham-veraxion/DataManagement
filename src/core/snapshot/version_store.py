@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 from pathlib import Path
+import json
 
 import pandas as pd
 
@@ -22,10 +23,21 @@ def list_snapshots() -> list[dict]:
         data_file = snapshot_dir / "data.csv"
         code_file = BASE / "code" / snapshot_dir.name / "transform.py"
         meta_file = BASE / "code" / snapshot_dir.name / "meta.json"
+        
+        # Extract prompt from metadata
+        prompt = "N/A"
+        if meta_file.exists():
+            try:
+                with open(meta_file, "r") as f:
+                    meta_data = json.load(f)
+                    prompt = meta_data.get("prompt", "N/A")
+            except Exception:
+                prompt = "N/A"
 
         snapshots.append(
             {
                 "snapshot_id": snapshot_dir.name,
+                "prompt": prompt,
                 "data_path": str(data_file),
                 "code_path": str(code_file),
                 "meta_path": str(meta_file),
