@@ -1,0 +1,7 @@
+storage:
+  raw: storage/raw
+  processed: storage/processed
+  snapshots: storage/snapshots
+
+execution:
+  temp_file: storage/processed/temp.csv

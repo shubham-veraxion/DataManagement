@@ -1,0 +1,49 @@
+2026-05-05 14:48:30,852 | INFO | src.agent.nodes.planner | Planning step executed
+2026-05-05 14:48:30,853 | INFO | src.agent.nodes.code_generator | Code generated
+2026-05-05 14:48:30,853 | INFO | src.agent.nodes.validator | Validation passed
+2026-05-05 14:48:30,853 | INFO | src.agent.nodes.planner | Planning step executed
+2026-05-05 14:48:30,855 | INFO | src.agent.nodes.executor | Execution success
+2026-05-05 14:48:46,368 | INFO | src.agent.nodes.planner | Planning step executed
+2026-05-05 14:48:46,368 | INFO | src.agent.nodes.code_generator | Code generated
+2026-05-05 14:48:46,369 | INFO | src.agent.nodes.validator | Validation passed
+2026-05-05 14:48:46,369 | INFO | src.agent.nodes.planner | Planning step executed
+2026-05-05 14:48:46,369 | INFO | src.agent.nodes.executor | Execution success
+2026-05-05 14:48:46,371 | INFO | src.core.transformations.runner | Saved output: storage/processed/temp.csv
+2026-05-05 14:48:46,372 | INFO | src.core.snapshot.snapshot_manager | Snapshot created: snap_20260505_091846
+2026-05-05 14:51:05,115 | INFO | src.core.ingestion.csv_loader | Loaded CSV: data/NORDPOOL_CET_Spot_Power_EOD_Validated_1330_20260422133012.csv
+2026-05-05 14:51:05,126 | INFO | src.core.ingestion.csv_loader | Loaded CSV: data/NORDPOOL_CET_Spot_Power_INT_Validated_1330_20260422133017.csv
+2026-05-05 14:51:05,127 | INFO | src.core.ingestion.csv_loader | Loaded CSV: data/ref_data_market_area_mapping.csv
+2026-05-05 14:51:22,031 | INFO | src.core.ingestion.csv_loader | Loaded CSV: data/NORDPOOL_CET_Spot_Power_EOD_Validated_1330_20260422133012.csv
+2026-05-05 14:51:22,041 | INFO | src.core.ingestion.csv_loader | Loaded CSV: data/NORDPOOL_CET_Spot_Power_INT_Validated_1330_20260422133017.csv
+2026-05-05 14:51:22,041 | INFO | src.core.ingestion.csv_loader | Loaded CSV: data/ref_data_market_area_mapping.csv
+2026-05-05 14:51:22,105 | INFO | src.core.ingestion.csv_loader | Loaded CSV: data/NORDPOOL_CET_Spot_Power_EOD_Validated_1330_20260422133012.csv
+2026-05-05 14:51:22,111 | INFO | src.core.ingestion.csv_loader | Loaded CSV: data/NORDPOOL_CET_Spot_Power_INT_Validated_1330_20260422133017.csv
+2026-05-05 14:51:22,112 | INFO | src.core.ingestion.csv_loader | Loaded CSV: data/ref_data_market_area_mapping.csv
+2026-05-05 14:51:22,113 | INFO | src.agent.nodes.planner | Planning step executed
+2026-05-05 14:51:22,114 | INFO | src.agent.nodes.code_generator | Code generated
+2026-05-05 14:51:22,114 | INFO | src.agent.nodes.validator | Validation passed
+2026-05-05 14:51:28,870 | INFO | src.core.ingestion.csv_loader | Loaded CSV: data/NORDPOOL_CET_Spot_Power_EOD_Validated_1330_20260422133012.csv
+2026-05-05 14:51:28,882 | INFO | src.core.ingestion.csv_loader | Loaded CSV: data/NORDPOOL_CET_Spot_Power_INT_Validated_1330_20260422133017.csv
+2026-05-05 14:51:28,883 | INFO | src.core.ingestion.csv_loader | Loaded CSV: data/ref_data_market_area_mapping.csv
+2026-05-05 14:51:28,886 | INFO | src.agent.nodes.planner | Planning step executed
+2026-05-05 14:51:28,896 | INFO | src.agent.nodes.executor | Execution success
+2026-05-05 14:51:28,912 | INFO | src.core.transformations.runner | Saved output: storage/processed/temp.csv
+2026-05-05 14:51:28,913 | INFO | src.core.snapshot.snapshot_manager | Snapshot created: snap_20260505_092128
+2026-05-05 14:53:06,107 | INFO | src.core.ingestion.csv_loader | Loaded CSV: data/NORDPOOL_CET_Spot_Power_EOD_Validated_1330_20260422133012.csv
+2026-05-05 14:53:06,119 | INFO | src.core.ingestion.csv_loader | Loaded CSV: data/NORDPOOL_CET_Spot_Power_INT_Validated_1330_20260422133017.csv
+2026-05-05 14:53:06,120 | INFO | src.core.ingestion.csv_loader | Loaded CSV: data/ref_data_market_area_mapping.csv
+2026-05-05 14:54:08,528 | INFO | src.core.ingestion.csv_loader | Loaded CSV: data/NORDPOOL_CET_Spot_Power_EOD_Validated_1330_20260422133012.csv
+2026-05-05 14:54:08,539 | INFO | src.core.ingestion.csv_loader | Loaded CSV: data/NORDPOOL_CET_Spot_Power_INT_Validated_1330_20260422133017.csv
+2026-05-05 14:54:08,540 | INFO | src.core.ingestion.csv_loader | Loaded CSV: data/ref_data_market_area_mapping.csv
+2026-05-05 14:54:09,400 | INFO | src.core.ingestion.csv_loader | Loaded CSV: data/NORDPOOL_CET_Spot_Power_EOD_Validated_1330_20260422133012.csv
+2026-05-05 14:54:09,411 | INFO | src.core.ingestion.csv_loader | Loaded CSV: data/NORDPOOL_CET_Spot_Power_INT_Validated_1330_20260422133017.csv
+2026-05-05 14:54:09,412 | INFO | src.core.ingestion.csv_loader | Loaded CSV: data/ref_data_market_area_mapping.csv
+2026-05-05 14:55:34,833 | INFO | src.core.ingestion.csv_loader | Loaded CSV: data/NORDPOOL_CET_Spot_Power_EOD_Validated_1330_20260422133012.csv
+2026-05-05 14:55:34,844 | INFO | src.core.ingestion.csv_loader | Loaded CSV: data/NORDPOOL_CET_Spot_Power_INT_Validated_1330_20260422133017.csv
+2026-05-05 14:55:34,845 | INFO | src.core.ingestion.csv_loader | Loaded CSV: data/ref_data_market_area_mapping.csv
+2026-05-05 14:55:34,894 | INFO | src.core.ingestion.csv_loader | Loaded CSV: data/NORDPOOL_CET_Spot_Power_EOD_Validated_1330_20260422133012.csv
+2026-05-05 14:55:34,901 | INFO | src.core.ingestion.csv_loader | Loaded CSV: data/NORDPOOL_CET_Spot_Power_INT_Validated_1330_20260422133017.csv
+2026-05-05 14:55:34,901 | INFO | src.core.ingestion.csv_loader | Loaded CSV: data/ref_data_market_area_mapping.csv
+2026-05-05 14:55:34,903 | INFO | src.agent.nodes.planner | Planning step executed
+2026-05-05 14:55:34,903 | INFO | src.agent.nodes.code_generator | Code generated
+2026-05-05 14:55:34,903 | INFO | src.agent.nodes.validator | Validation passed
