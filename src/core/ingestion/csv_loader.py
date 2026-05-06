@@ -1,11 +1,30 @@
-import pandas as pd
 from src.core.logging.logger import get_logger
+from pyspark.sql import SparkSession, DataFrame
 
 logger = get_logger(__name__)
 
-def load_csv(file_path: str) -> pd.DataFrame:
+_SPARK_SESSION: SparkSession | None = None
+
+
+def get_spark_session() -> SparkSession:
+    global _SPARK_SESSION
+    if _SPARK_SESSION is None:
+        _SPARK_SESSION = (
+            SparkSession.builder
+            .appName("AgenticMDMTransformer")
+            .getOrCreate()
+        )
+    return _SPARK_SESSION
+
+def load_csv(file_path: str) -> DataFrame:
     try:
-        df = pd.read_csv(file_path)
+        spark = get_spark_session()
+        df = (
+            spark.read
+            .option("header", True)
+            .option("inferSchema", True)
+            .csv(file_path)
+        )
         logger.info(f"Loaded CSV: {file_path}")
         return df
     except Exception as e:

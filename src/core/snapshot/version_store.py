@@ -3,7 +3,7 @@ from __future__ import annotations
 from pathlib import Path
 import json
 
-import pandas as pd
+from src.core.ingestion.csv_loader import load_csv
 
 
 BASE = Path("storage/snapshots")
@@ -48,9 +48,9 @@ def list_snapshots() -> list[dict]:
     return snapshots
 
 
-def load_snapshot_data(snapshot_id: str) -> pd.DataFrame:
+def load_snapshot_data(snapshot_id: str):
     data_file = BASE / "data" / snapshot_id / "data.csv"
     if not data_file.exists():
         raise FileNotFoundError(f"Snapshot data not found: {data_file}")
 
-    return pd.read_csv(data_file)
+    return load_csv(str(data_file))

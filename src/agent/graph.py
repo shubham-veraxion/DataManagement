@@ -23,8 +23,10 @@ def run_agent(state, df_dict, output_path):
         )
 
         # 3. Validate
-        if not validate(state.code):
-            raise Exception("Invalid code")
+        try:
+            validate(state.code)
+        except Exception as exc:
+            raise Exception(f"Invalid code: {exc}")
 
         # 4. Approval check
         if not state.approved:
@@ -32,6 +34,12 @@ def run_agent(state, df_dict, output_path):
 
     if not state.approved:
         return None, state
+
+    # Re-validate before execution (covers edits or older cached code)
+    try:
+        validate(state.code)
+    except Exception as exc:
+        raise Exception(f"Invalid code: {exc}")
 
     # 5. Execute approved code against the selected dataset
     result_df = execute(state.code, target_df_dict)

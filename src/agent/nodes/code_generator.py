@@ -61,93 +61,46 @@ def generate_code(
     Returns:
         Python code with a transform(df_dict) function
     """
-    try:
-        # Extract column names if dataframes are provided
-        columns = []
-        sample_data = ""
-        if df_dict and target_dataset and target_dataset in df_dict:
-            df = df_dict[target_dataset]
-            columns = list(df.columns)
-            # Get first row as sample
+    # Extract column names if dataframes are provided
+    columns = []
+    sample_data = ""
+    if df_dict and target_dataset and target_dataset in df_dict:
+        df = df_dict[target_dataset]
+        columns = list(df.columns)
+        # Get first row as sample
+        if df.__class__.__module__.startswith("pyspark.sql"):
+            rows = df.limit(1).collect()
+            if rows:
+                sample_data = str(rows[0].asDict())
+        else:
             if len(df) > 0:
                 first_row = df.iloc[0].to_dict()
                 sample_data = str(first_row)
-        
-        # Build the prompt with context
-        full_prompt = build_code_generation_prompt(
-            prompt,
-            target_dataset or "unknown",
-            columns,
-            sample_data
-        )
-        
-        # Create LLM instance
-        llm = _create_llm_instance(llm_provider, llm_model)
-        
-        # Call LLM
-        logger.info(f"Calling {llm_provider} LLM ({llm_model}) for code generation")
-        response = llm.invoke(full_prompt)
-        
-        # Extract response text
-        response_text = response if isinstance(response, str) else response.content
-        
-        # Extract code block from response
-        code = _extract_code_block(response_text)
-        
-        if not code:
-            logger.error("No code extracted from LLM response")
-            raise ValueError("LLM did not generate valid code")
-        
-        logger.info(f"Code generated successfully ({len(code)} chars)")
-        return code
-        
-    except Exception as e:
-        logger.error(f"Error generating code with {llm_provider}: {e}")
-        # Fallback to deterministic generation
-        logger.info("Falling back to deterministic code generation")
-        return _generate_deterministic_code(prompt, target_dataset)
 
+    # Build the prompt with context
+    full_prompt = build_code_generation_prompt(
+        prompt,
+        target_dataset or "unknown",
+        columns,
+        sample_data
+    )
 
-def _generate_deterministic_code(prompt: str, target_dataset: str | None = None) -> str:
-    """
-    Fallback deterministic code generation (keyword-based rules).
-    Used when LLM is unavailable.
-    """
-    target_dataset_repr = repr(target_dataset) if target_dataset else "None"
-    prompt_literal = repr(prompt.lower())
+    # Create LLM instance
+    llm = _create_llm_instance(llm_provider, llm_model)
 
-    code = f"""
-import pandas as pd
+    # Call LLM
+    logger.info(f"Calling {llm_provider} LLM ({llm_model}) for code generation")
+    response = llm.invoke(full_prompt)
 
-def transform(df_dict):
-    target_dataset = {target_dataset_repr}
-    prompt = {prompt_literal}
+    # Extract response text
+    response_text = response if isinstance(response, str) else response.content
 
-    if not df_dict:
-        raise ValueError("No datasets were provided for execution")
+    # Extract code block from response
+    code = _extract_code_block(response_text)
 
-    if target_dataset is None:
-        target_dataset = next(iter(df_dict.keys()))
+    if not code:
+        logger.error("No code extracted from LLM response")
+        raise ValueError("LLM did not generate valid code")
 
-    if target_dataset not in df_dict:
-        raise KeyError(f"Target dataset '{{target_dataset}}' is not available")
-
-    df = df_dict[target_dataset].copy()
-
-    # Apply transformations based on keywords
-    if any(word in prompt for word in ["null", "missing", "na", "empty"]):
-        if "price" in prompt and "price" in df.columns:
-            df = df.loc[df["price"].notna()].copy()
-        else:
-            df = df.dropna().copy()
-
-    if "duplicate" in prompt:
-        df = df.drop_duplicates().copy()
-
-    if "zero" in prompt and "price" in prompt and "price" in df.columns:
-        df = df.loc[df["price"].notna() & (df["price"] != 0)].copy()
-
-    return df
-"""
-    logger.info("Deterministic code generated (fallback)")
+    logger.info(f"Code generated successfully ({len(code)} chars)")
     return code

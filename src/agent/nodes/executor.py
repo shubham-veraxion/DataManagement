@@ -6,7 +6,7 @@ def execute(code: str, df_dict: dict):
     local_env = {}
 
     try:
-        exec(code, {}, local_env)
+        exec(code, local_env, local_env)
         result = local_env["transform"](df_dict)
 
         logger.info("Execution success")
