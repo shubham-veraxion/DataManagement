@@ -8,6 +8,7 @@ class AgentState:
     approved: bool = False
     snapshot_id: str = ""
     result_path: str = ""
+    log_path: str = ""
     last_error: str = ""
     history: list = field(default_factory=list)
     llm_provider: str = "ollama"

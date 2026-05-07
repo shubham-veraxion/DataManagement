@@ -28,15 +28,19 @@ def _create_llm_instance(provider: str, model: str):
             from langchain_ollama import OllamaLLM
             return OllamaLLM(model=model, temperature=0.3, timeout=120)
         except ImportError as e:
-            logger.error(f"langchain-ollama not installed: {e}")
-            raise
+            logger.exception("Missing dependency: langchain-ollama")
+            raise RuntimeError(
+                "Missing dependency: langchain-ollama. Install it or switch to the Google provider."
+            ) from e
     elif provider == "google":
         try:
             from langchain_google_genai import ChatGoogleGenerativeAI
             return ChatGoogleGenerativeAI(model=model, temperature=0.3, timeout=120)
         except ImportError as e:
-            logger.error(f"langchain-google-genai not installed: {e}")
-            raise
+            logger.exception("Missing dependency: langchain-google-genai")
+            raise RuntimeError(
+                "Missing dependency: langchain-google-genai. Install it or switch to the Ollama provider."
+            ) from e
     else:
         raise ValueError(f"Unsupported LLM provider: {provider}")
 

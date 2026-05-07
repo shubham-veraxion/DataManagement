@@ -10,18 +10,22 @@ def _is_spark_df(df) -> bool:
 
 
 def save_output(df, path: str):
-    Path(path).parent.mkdir(parents=True, exist_ok=True)
-    if _is_spark_df(df):
-        tmp_dir = Path(path).parent / f"_spark_tmp_{uuid.uuid4().hex}"
-        df.coalesce(1).write.mode("overwrite").option("header", True).csv(str(tmp_dir))
+    try:
+        Path(path).parent.mkdir(parents=True, exist_ok=True)
+        if _is_spark_df(df):
+            tmp_dir = Path(path).parent / f"_spark_tmp_{uuid.uuid4().hex}"
+            df.coalesce(1).write.mode("overwrite").option("header", True).csv(str(tmp_dir))
 
-        part_files = list(tmp_dir.glob("part-*.csv"))
-        if not part_files:
+            part_files = list(tmp_dir.glob("part-*.csv"))
+            if not part_files:
+                shutil.rmtree(tmp_dir, ignore_errors=True)
+                raise FileNotFoundError("Spark output missing part file")
+
+            shutil.move(str(part_files[0]), path)
             shutil.rmtree(tmp_dir, ignore_errors=True)
-            raise FileNotFoundError("Spark output missing part file")
-
-        shutil.move(str(part_files[0]), path)
-        shutil.rmtree(tmp_dir, ignore_errors=True)
-    else:
-        df.to_csv(path, index=False)
-    logger.info(f"Saved output: {path}")
+        else:
+            df.to_csv(path, index=False)
+        logger.info(f"Saved output: {path}")
+    except Exception as e:
+        logger.exception("Failed to save output: %s", path)
+        raise RuntimeError(f"Failed to save output: {path}. {e}") from e

@@ -174,7 +174,7 @@ with st.sidebar:
         
         col1, col2 = st.columns(2)
         with col1:
-            if st.button("📥 Load", use_container_width=True, key="load_snapshot_btn"):
+            if st.button("📥 Load", width="stretch", key="load_snapshot_btn"):
                 if dataframes and "active_dataset" in st.session_state and st.session_state.active_dataset:
                     snapshot_df = load_snapshot_data(selected_snapshot)
                     st.session_state.dataframes[st.session_state.active_dataset] = snapshot_df
@@ -182,7 +182,7 @@ with st.sidebar:
                     st.rerun()
         
         with col2:
-            if st.button("🔄 Rollback", use_container_width=True, key="rollback_snapshot_btn"):
+            if st.button("🔄 Rollback", width="stretch", key="rollback_snapshot_btn"):
                 if dataframes and "active_dataset" in st.session_state and st.session_state.active_dataset:
                     snapshot_df = load_snapshot_data(selected_snapshot)
                     st.session_state.dataframes[st.session_state.active_dataset] = snapshot_df
@@ -266,13 +266,14 @@ if dataframes:
     preview_df, row_count, col_count = _preview_metrics(current_df)
 
     st.markdown(" ")
+    code_placeholder = None
     data_tab, code_tab = st.tabs(["Data Preview", "Code Preview"])
     with data_tab:
         preview_tab, schema_tab = st.tabs(["Preview", "Schema"])
         with preview_tab:
-            st.dataframe(preview_df, use_container_width=True)
+            st.dataframe(preview_df, width="stretch")
         with schema_tab:
-            st.dataframe(_schema_rows(current_df), use_container_width=True)
+            st.dataframe(_schema_rows(current_df), width="stretch")
 
         metric_left, metric_mid, metric_right = st.columns(3)
         with metric_left:
@@ -282,14 +283,20 @@ if dataframes:
         with metric_right:
             st.metric("Target", active_dataset, delta=None)
     with code_tab:
+        code_placeholder = st.empty()
         code = st.session_state.agent_state.code if st.session_state.agent_state else ""
         if code:
-            st.code(code, language="python")
+            code_placeholder.code(code, language="python")
         else:
-            st.info("Generate code to preview it here.")
+            code_placeholder.info("Generate code to preview it here.")
 
     st.markdown(" ")
     st.subheader("Transformation Studio")
+
+    if st.session_state.agent_state and st.session_state.agent_state.log_path:
+        st.caption(f"Run log: {st.session_state.agent_state.log_path}")
+    if st.session_state.agent_state and st.session_state.agent_state.last_error:
+        st.error(f"❌ {st.session_state.agent_state.last_error}")
 
     prompt_value = st.session_state.restored_prompt if st.session_state.restored_prompt else ""
     prompt = st.text_area(
@@ -305,9 +312,9 @@ if dataframes:
 
     action_left, action_right = st.columns(2)
     with action_left:
-        generate_clicked = st.button("🔨 Generate Code", use_container_width=True)
+        generate_clicked = st.button("🔨 Generate Code", width="stretch")
     with action_right:
-        approve_clicked = st.button("✅ Approve & Execute", use_container_width=True)
+        approve_clicked = st.button("✅ Approve & Execute", width="stretch")
 
     if generate_clicked:
         state = AgentState(
@@ -317,9 +324,14 @@ if dataframes:
             llm_model=llm_model,
         )
         try:
-            result, state = run_agent(state, st.session_state.dataframes, str(OUTPUT_PATH))
+            with st.spinner("Generating code..."):
+                result, state = run_agent(state, st.session_state.dataframes, str(OUTPUT_PATH))
             st.session_state.agent_state = state
-            st.info("Review the generated code, then approve to execute.")
+            if code_placeholder is not None:
+                if state.code:
+                    code_placeholder.code(state.code, language="python")
+                else:
+                    code_placeholder.info("Generate code to preview it here.")
         except Exception as exc:
             state.last_error = str(exc)
             st.session_state.agent_state = state
@@ -328,11 +340,12 @@ if dataframes:
     if approve_clicked and st.session_state.agent_state and st.session_state.agent_state.code:
         st.session_state.agent_state.approved = True
         try:
-            result, state = run_agent(
-                st.session_state.agent_state,
-                st.session_state.dataframes,
-                str(OUTPUT_PATH),
-            )
+            with st.spinner("Executing transformation..."):
+                result, state = run_agent(
+                    st.session_state.agent_state,
+                    st.session_state.dataframes,
+                    str(OUTPUT_PATH),
+                )
             st.session_state.agent_state = state
             if result is not None:
                 st.session_state.dataframes[active_dataset] = result

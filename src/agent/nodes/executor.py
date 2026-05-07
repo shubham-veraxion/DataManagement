@@ -7,11 +7,14 @@ def execute(code: str, df_dict: dict):
 
     try:
         exec(code, local_env, local_env)
-        result = local_env["transform"](df_dict)
+        transform_fn = local_env.get("transform")
+        if not callable(transform_fn):
+            raise ValueError("Generated code must define a callable transform(df_dict) function")
+        result = transform_fn(df_dict)
 
         logger.info("Execution success")
         return result
 
-    except Exception as e:
-        logger.error(f"Execution failed: {str(e)}")
+    except Exception:
+        logger.exception("Execution failed")
         raise

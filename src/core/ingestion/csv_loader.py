@@ -28,5 +28,5 @@ def load_csv(file_path: str) -> DataFrame:
         logger.info(f"Loaded CSV: {file_path}")
         return df
     except Exception as e:
-        logger.error(f"Error loading CSV: {str(e)}")
-        raise
+        logger.exception("Error loading CSV: %s", file_path)
+        raise RuntimeError(f"Failed to load CSV: {file_path}. {e}") from e
