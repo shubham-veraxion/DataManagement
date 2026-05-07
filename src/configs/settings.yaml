@@ -18,6 +18,7 @@ system_prompt: |
   
   Rules:
   1. Generate a single function `transform(df_dict)` that takes a dictionary of Spark DataFrames.
+  2. Use logger `from src.core.logging.logger import get_logger` to log the execution steps and any errors.
   2. The function must extract datasets from df_dict using their names.
   3. Return a transformed Spark DataFrame.
   4. Include error handling for missing columns or datasets.
